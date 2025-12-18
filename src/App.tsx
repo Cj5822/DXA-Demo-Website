@@ -1,6 +1,7 @@
 import Navbar from "./Components/NavBar";
 import Home from "./pages/Home";
 import Footer from "./Components/Footer";
+import ProductList from "./pages/ProductList";
 import { Box } from "@mui/material";
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
       <Navbar />
 
       <Box component="main" sx={{ flex: 1 }}>
-        <Home />
+        <ProductList />
       </Box>
 
       <Footer />
