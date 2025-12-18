@@ -1,7 +1,21 @@
-import { Box, Typography, Button, Stack, Select, MenuItem} from "@mui/material";
+import { Box, Typography, Button, Stack, Select, MenuItem, Grid } from "@mui/material";
+import shortsImg from "/src/assets/classicshort.png";
+import dressImg from "/src/assets/greendress.png";
+import tshirtImg from "/src/assets/blacktshirt.png";
+import shoesImg from "/src/assets/redshoes.png";
+import jeansImg from "/src/assets/jeans.png";
+import shirtImg from "/src/assets/dotshirt.png";
 
 const ProductList = () => {
-    const productCount = 0; // Replace with actual number
+    const products = [
+    { name: "Classic Shorts", price: "$39.99", image: shortsImg },
+    { name: "Green Dress", price: "$89.99", image: dressImg },
+    { name: "Black T-Shirt", price: "$39.99", image: tshirtImg },
+    { name: "Red Shoes", price: "$99.99", image: shoesImg },
+    { name: "Jeans", price: "$49.99", image: jeansImg },
+    { name: "Shirt", price: "$59.99", image: shirtImg },
+    ];
+    const productCount = products.length; // Replace with actual number
     const categories = ["All", "Tops", "Bottoms", "Dresses", "Outerwear", "Shoes"];
 
     return (
@@ -35,7 +49,7 @@ const ProductList = () => {
                         key={category}
                         variant={index ===0 ? "contained" : "text"}
                         size="small"
-                        sx={{ textTransform: "none", fontWeight: 500, 
+                        sx={{ textTransform: "none",  
                         backgroundColor: index === 0 ? "#000000" : "white",}}>
                     {category}
                     </Button>
@@ -44,10 +58,10 @@ const ProductList = () => {
 
                 {/* Sort dropdown */}
                 <Select
-                    size="small"
                     defaultValue="featured"
                     sx={{
                         minWidth: 185,
+                        maxHeight: 35,
                         bgcolor: "white",
                         "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "transparent",
@@ -64,6 +78,33 @@ const ProductList = () => {
                     <MenuItem value="price-high">Price: High to Low</MenuItem>
                 </Select>
             </Box>
+            {/* Product Grid */}
+            <Grid container spacing={4}>
+                {products.map((product, index) => (
+                <Grid size={4} key={index}>
+                    <Box sx={{ textAlign: "left" }}>
+                        <Box
+                        component="img"
+                        src={product.image}
+                        alt={product.name}
+                        sx={{
+                            width: "100%",
+                            height: 250,
+                            objectFit: "cover",
+                            cursor: "pointer",
+                            borderRadius: 1,
+                            mx: "auto", 
+                        }}/>
+                        <Typography variant="body1" sx={{ mt: 1 }}>
+                        {product.name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                        {product.price}
+                        </Typography>
+                    </Box>
+                </Grid>
+                ))}
+            </Grid>
         </Box>
     )
 };
