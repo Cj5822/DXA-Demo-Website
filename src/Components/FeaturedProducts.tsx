@@ -5,8 +5,6 @@ import {
   CardMedia,
   CardContent,
   Typography,
-  CardActions,
-  Button,
   Box,
 } from "@mui/material";
 
