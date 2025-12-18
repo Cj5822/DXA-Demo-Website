@@ -1,6 +1,6 @@
-import Navbar from "./Components/NavBar";
+import Navbar from "./components/NavBar";
 import Home from "./pages/Home";
-import Footer from "./Components/Footer";
+import Footer from "./components/Footer";
 import { Box } from "@mui/material";
 
 function App() {

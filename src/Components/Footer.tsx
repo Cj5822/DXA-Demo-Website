@@ -1,11 +1,14 @@
 import { Box, Typography, IconButton } from "@mui/material";
-import { FaFacebookF, FaLinkedinIn, FaYoutube, FaInstagram } from "react-icons/fa";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import InstagramIcon from "@mui/icons-material/Instagram";
 
 const socialLinks = [
-  { label: "facebook", icon: <FaFacebookF size={12} />, href: "#" },
-  { label: "linkedin", icon: <FaLinkedinIn size={12} />, href: "#" },
-  { label: "youtube", icon: <FaYoutube size={12} />, href: "#" },
-  { label: "instagram", icon: <FaInstagram size={12} />, href: "#" },
+  { label: "facebook", icon: <FacebookIcon fontSize="small" />, href: "#" },
+  { label: "linkedin", icon: <LinkedInIcon fontSize="small" />, href: "#" },
+  { label: "youtube", icon: <YouTubeIcon fontSize="small" />, href: "#" },
+  { label: "instagram", icon: <InstagramIcon fontSize="small" />, href: "#" },
 ];
 
 const Footer = () => {
