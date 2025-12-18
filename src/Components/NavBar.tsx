@@ -1,6 +1,6 @@
 // src/components/Navbar.tsx
 import React from "react";
-import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import { AppBar, Toolbar, Button, Box } from "@mui/material";
 import shoppingCartIcon from "../assets/Shoppingcart.png";
 
 const Navbar: React.FC = () => {

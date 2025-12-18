@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "flex-start",
-        px: 20,
+        px: 50,
         color: "white",
       }}
     >
