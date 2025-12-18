@@ -1,14 +1,26 @@
-import React from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import { FaFacebookF, FaLinkedinIn, FaYoutube, FaInstagram } from "react-icons/fa";
 
-const Footer: React.FC = () => {
+const socialLinks = [
+  { label: "facebook", icon: <FaFacebookF size={12} />, href: "#" },
+  { label: "linkedin", icon: <FaLinkedinIn size={12} />, href: "#" },
+  { label: "youtube", icon: <FaYoutube size={12} />, href: "#" },
+  { label: "instagram", icon: <FaInstagram size={12} />, href: "#" },
+];
+
+const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
     <Box
       component="footer"
-      sx={{ borderTop: 1, borderColor: "divider", py: 3, mt: 6, backgroundColor: "transparent" }}
+      sx={{
+        borderTop: 1,
+        borderColor: "divider",
+        py: 3,
+        mt: 6,
+        bgcolor: "common.white",
+      }}
     >
       <Box
         sx={{
@@ -21,60 +33,37 @@ const Footer: React.FC = () => {
           gap: 2,
         }}
       >
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: { xs: "center", sm: "flex-start" } }}>
-          <Box sx={{ mt: 1, display: "flex", gap: 1 }} aria-label="social links">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "center", sm: "flex-start" },
+            gap: 1,
+          }}
+        >
+          {socialLinks.map(({ label, icon, href }) => (
             <IconButton
+              key={label}
               component="a"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="facebook"
+              href={href}
+              aria-label={label}
               size="small"
-              sx={{ width: 32, height: 32, bgcolor: "#f3f4f6", color: "text.primary", borderRadius: 1, '&:hover': { bgcolor: '#e5e7eb' } }}
+              sx={{
+                width: 32,
+                height: 32,
+                bgcolor: "common.white",
+                color: "text.primary",
+                borderRadius: 1,
+                "&:hover": { bgcolor: "grey.200" },
+              }}
             >
-              <FaFacebookF size={12} />
+              {icon}
             </IconButton>
-            <IconButton
-              component="a"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="linkedin"
-              size="small"
-              sx={{ width: 32, height: 32, bgcolor: "#f3f4f6", color: "text.primary", borderRadius: 1, '&:hover': { bgcolor: '#e5e7eb' } }}
-            >
-              <FaLinkedinIn size={12} />
-            </IconButton>
-            <IconButton
-              component="a"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="youtube"
-              size="small"
-              sx={{ width: 32, height: 32, bgcolor: "#f3f4f6", color: "text.primary", borderRadius: 1, '&:hover': { bgcolor: '#e5e7eb' } }}
-            >
-              <FaYoutube size={12} />
-            </IconButton>
-            <IconButton
-              component="a"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="instagram"
-              size="small"
-              sx={{ width: 32, height: 32, bgcolor: "#f3f4f6", color: "text.primary", borderRadius: 1, '&:hover': { bgcolor: '#e5e7eb' } }}
-            >
-              <FaInstagram size={12} />
-            </IconButton>
-          </Box>
+          ))}
         </Box>
-
-        <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center" }}>
+        <Typography variant="body2" color="text.secondary" textAlign="center">
           © {year} DXA
         </Typography>
-
-        <Box sx={{ display: "flex", justifyContent: { xs: "center", sm: "flex-end" } }} />
+        <Box />
       </Box>
     </Box>
   );
