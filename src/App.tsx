@@ -1,12 +1,19 @@
-import Navbar from "./components/Navbar";
+import Navbar from "./Components/NavBar";
 import Home from "./pages/Home";
+import Footer from "./Components/Footer";
+import { Box } from "@mui/material";
 
 function App() {
   return (
-    <>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Navbar />
-      <Home />
-    </>
+
+      <Box component="main" sx={{ flex: 1 }}>
+        <Home />
+      </Box>
+
+      <Footer />
+    </Box>
   );
 }
 
