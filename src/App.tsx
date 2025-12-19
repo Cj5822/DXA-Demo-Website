@@ -1,7 +1,7 @@
-import Navbar from "./Components/NavBar";
+import Navbar from "./components/NavBar";
 import Home from "./pages/Home";
 import ProductList from "./pages/ProductList";
-import Footer from "./Components/Footer";
+import Footer from "./components/Footer";
 import { Box } from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
