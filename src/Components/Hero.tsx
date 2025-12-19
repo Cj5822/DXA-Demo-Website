@@ -1,10 +1,13 @@
 // src/components/Hero.tsx
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import heroImage from "../assets/hero.png";
 
 const Hero: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <Box
       sx={{
@@ -31,6 +34,7 @@ const Hero: React.FC = () => {
         color="secondary"
         sx={{ mt: 4, px: 4, py: 1.5, fontSize: "1rem" }}
         endIcon={<ArrowForwardIcon />}
+        onClick={() => navigate("/products")}
       >
         Shop Now
       </Button>
