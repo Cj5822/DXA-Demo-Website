@@ -1,6 +1,6 @@
-// src/components/Navbar.tsx
 import React from "react";
 import { AppBar, Toolbar, Button, Box } from "@mui/material";
+import { Link } from "react-router-dom";
 import shoppingCartIcon from "../assets/Shoppingcart.png";
 
 const Navbar: React.FC = () => {
@@ -14,15 +14,15 @@ const Navbar: React.FC = () => {
       <Toolbar>
         {/* Left side: App name */}
         <Box sx={{ display: "flex", justifyContent: "flex-end"}}>
-          <Button color="inherit" sx={{ fontSize: "1.5rem", padding: "12px 20px" }}>
+          <Button component={Link} to="/" color="inherit" sx={{ fontSize: "1.5rem", padding: "12px 20px" }}>
             DXA
           </Button>
         </Box>
 
         {/* Center section */}
         <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
-          <Button color="inherit" sx={{ fontSize: "1.1rem", padding: "12px 20px" }}>Home</Button>
-          <Button color="inherit" sx={{ fontSize: "1.1rem", padding: "12px 20px" }}>Products</Button>
+          <Button component={Link} to="/" color="inherit" sx={{ fontSize: "1.1rem", padding: "12px 20px" }}>Home</Button>
+          <Button component={Link} to="/products" color="inherit" sx={{ fontSize: "1.1rem", padding: "12px 20px" }}>Products</Button>
         </Box>
 
         {/* Right side */}

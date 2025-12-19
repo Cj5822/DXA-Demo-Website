@@ -1,19 +1,26 @@
-import Navbar from "./components/NavBar";
+import Navbar from "./Components/NavBar";
 import Home from "./pages/Home";
-import Footer from "./components/Footer";
+import ProductList from "./pages/ProductList";
+import Footer from "./Components/Footer";
 import { Box } from "@mui/material";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      <Navbar />
+    <BrowserRouter>
+      <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+        <Navbar />
 
-      <Box component="main" sx={{ flex: 1 }}>
-        <Home />
+        <Box component="main" sx={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<ProductList />} />
+          </Routes>
+        </Box>
+
+        <Footer />
       </Box>
-
-      <Footer />
-    </Box>
+    </BrowserRouter>
   );
 }
 
