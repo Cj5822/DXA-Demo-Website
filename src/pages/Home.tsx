@@ -1,4 +1,5 @@
 import { Stack, Typography, Button, Container } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
@@ -12,8 +13,8 @@ export default function Home() {
           This is your home page. Start adding sections, images, or cards here.
         </Typography>
 
-        <Button variant="contained">
-          Get Started
+        <Button variant="contained" component={Link} to="/products">
+          Shop Now
         </Button>
       </Stack>
     </Container>
