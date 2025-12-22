@@ -1,22 +1,15 @@
 import { Box, Typography, Button, Stack, Select, MenuItem, Grid } from "@mui/material";
-import shortsImg from "/src/assets/classicshort.png";
-import dressImg from "/src/assets/greendress.png";
-import tshirtImg from "/src/assets/blacktshirt.png";
-import shoesImg from "/src/assets/redshoes.png";
-import jeansImg from "/src/assets/jeans.png";
-import shirtImg from "/src/assets/dotshirt.png";
+import { useNavigate } from "react-router-dom";
+import { products } from "../data/products";
 
 const ProductList = () => {
-    const products = [
-    { name: "Classic Shorts", price: "$39.99", image: shortsImg },
-    { name: "Green Dress", price: "$89.99", image: dressImg },
-    { name: "Black T-Shirt", price: "$39.99", image: tshirtImg },
-    { name: "Red Shoes", price: "$99.99", image: shoesImg },
-    { name: "Jeans", price: "$49.99", image: jeansImg },
-    { name: "Shirt", price: "$59.99", image: shirtImg },
-    ];
-    const productCount = products.length; // Replace with actual number
+    const navigate = useNavigate();
+    const productCount = products.length;
     const categories = ["All", "Tops", "Bottoms", "Dresses", "Outerwear", "Shoes"];
+
+    const handleProductClick = (productId: string) => {
+        navigate(`/product/${productId}`);
+    };
 
     return (
         <Box sx={{ maxWidth: 1280, mx: "auto", px: 2, py: 4 }}>
@@ -80,9 +73,12 @@ const ProductList = () => {
             </Box>
             {/* Product Grid */}
             <Grid container spacing={4}>
-                {products.map((product, index) => (
-                <Grid size={4} key={index}>
-                    <Box sx={{ textAlign: "left" }}>
+                {products.map((product) => (
+                <Grid size={4} key={product.id}>
+                    <Box 
+                        sx={{ textAlign: "left", cursor: "pointer" }}
+                        onClick={() => handleProductClick(product.id)}
+                    >
                         <Box
                         component="img"
                         src={product.image}
@@ -93,13 +89,16 @@ const ProductList = () => {
                             objectFit: "cover",
                             cursor: "pointer",
                             borderRadius: 1,
-                            mx: "auto", 
+                            mx: "auto",
+                            "&:hover": {
+                                opacity: 0.8,
+                            }
                         }}/>
                         <Typography variant="body1" sx={{ mt: 1 }}>
                         {product.name}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                        {product.price}
+                        ${product.price.toFixed(2)}
                         </Typography>
                     </Box>
                 </Grid>
