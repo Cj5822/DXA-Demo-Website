@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
 
         {/* Right side */}
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button color="inherit" sx={{ minWidth: "auto", padding: "8px" }}>
+          <Button component={Link} to="/cart" color="inherit" sx={{ minWidth: "auto", padding: "8px" }}>
             <img src={shoppingCartIcon} alt="Cart" style={{ width: "24px", height: "24px" }} />
           </Button>
         </Box>
