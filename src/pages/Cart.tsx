@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Box,
   Container,
@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { FiShoppingBag } from "react-icons/fi";
 
 type CartItem = {
   id: string;
@@ -43,13 +44,33 @@ const saveCart = (items: CartItem[]) => {
 const Cart: React.FC = () => {
   const [items, setItems] = useState<CartItem[]>([]);
 
+  const mountedRef = useRef(false);
+
   useEffect(() => {
     setItems(loadCart());
   }, []);
 
   useEffect(() => {
+    if (!mountedRef.current) {
+      mountedRef.current = true;
+      return;
+    }
     saveCart(items);
   }, [items]);
+
+  useEffect(() => {
+    const onCartUpdated = () => setItems(loadCart());
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY) setItems(loadCart());
+    };
+
+    window.addEventListener("cart:updated", onCartUpdated);
+    window.addEventListener("storage", onStorage as EventListener);
+    return () => {
+      window.removeEventListener("cart:updated", onCartUpdated);
+      window.removeEventListener("storage", onStorage as EventListener);
+    };
+  }, []);
 
   const changeQty = (index: number, delta: number) => {
     setItems((prev) => {
@@ -87,10 +108,7 @@ const Cart: React.FC = () => {
               boxShadow: 1,
             }}
           >
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M6 2h12l-1 6H7L6 2z" stroke="#BDBDBD" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M3 8h18l-1.5 9h-13L3 8z" stroke="#E0E0E0" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+            <FiShoppingBag size={48} color="#BDBDBD" />
           </Box>
 
           <Typography variant="h5" gutterBottom>
