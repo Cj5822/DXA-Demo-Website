@@ -8,15 +8,7 @@ import {
   Box,
 } from "@mui/material";
 
-import shortsImg from "../assets/classic-shorts.png";
-import dressImg from "../assets/green-dress.png";
-import tshirtImg from "../assets/black-tshirt.png";
-
-const products = [
-  { name: "Classic Shorts", price: "$79.99", image: shortsImg },
-  { name: "Green Dress", price: "$89.99", image: dressImg },
-  { name: "Black T-Shirt", price: "$39.99", image: tshirtImg },
-];
+import { products } from "../data/products";
 
 const FeaturedProducts: React.FC = () => {
   return (
@@ -26,7 +18,10 @@ const FeaturedProducts: React.FC = () => {
           Featured Products
         </Typography>
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" }, gap: 4 }}>
-          {products.map((product) => (
+          {products
+            .filter((product) => product.isFeatured)
+            .slice(0, 3)
+            .map((product) => (
             <Card key={product.name} sx={{ boxShadow: 3, cursor: "pointer" }}>
               <CardMedia
                 component="img"
@@ -39,7 +34,7 @@ const FeaturedProducts: React.FC = () => {
                   {product.name}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  {product.price}
+                  ${product.price.toFixed(2)}
                 </Typography>
               </CardContent>
             </Card>
