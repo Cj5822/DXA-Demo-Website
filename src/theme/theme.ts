@@ -24,6 +24,16 @@ const theme = createTheme({
         },
       },
     },
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          // keep a stable vertical scrollbar to prevent layout shift
+          overflowY: 'scroll',
+          // modern browsers: reserve scrollbar gutter if supported
+          scrollbarGutter: 'stable',
+        },
+      },
+    },
   },
 });
 
