@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, Stack, Grid, Chip } from "@mui/material";
+import { Box, Typography, Button, Stack, Grid, Chip, Snackbar } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { productById } from "../data/products";
@@ -8,6 +8,7 @@ const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState<string>("");
+  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
 
   const product = id ? productById[id] : undefined;
 
@@ -27,8 +28,34 @@ const ProductDetail: React.FC = () => {
       alert("Please select a size");
       return;
     }
-    // Add to cart logic here
-    console.log(`Added ${product.name} in size ${selectedSize} to cart`);
+    try {
+      const STORAGE_KEY = "dxa_cart";
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const cart = raw ? (JSON.parse(raw) as any[]) : [];
+
+      const existingIndex = cart.findIndex((c) => c.id === product.id && c.size === selectedSize);
+      if (existingIndex > -1) {
+        cart[existingIndex].qty = (cart[existingIndex].qty || 1) + 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          size: selectedSize,
+          color: undefined,
+          qty: 1,
+        });
+      }
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+      try {
+        window.dispatchEvent(new Event("cart:updated"));
+      } catch (e) {}
+      setSnackbarOpen(true);
+    } catch (err) {
+      console.error("Failed to add to cart", err);
+    }
   };
 
   return (
@@ -140,6 +167,13 @@ const ProductDetail: React.FC = () => {
           >
             Add to cart
           </Button>
+
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={2500}
+            onClose={() => setSnackbarOpen(false)}
+            message="Added to cart"
+          />
 
           {/* Shipping Info */}
           <Typography variant="body2" color="text.secondary">
