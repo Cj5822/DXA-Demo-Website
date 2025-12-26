@@ -33,9 +33,13 @@ const ProductDetail: React.FC = () => {
       const raw = localStorage.getItem(STORAGE_KEY);
       const cart = raw ? (JSON.parse(raw) as any[]) : [];
 
-      const existingIndex = cart.findIndex((c) => c.id === product.id && c.size === selectedSize);
+      const existingIndex = cart.findIndex((c) => String(c.id) === String(product.id) && (c.size || "") === (selectedSize || ""));
       if (existingIndex > -1) {
-        cart[existingIndex].qty = (cart[existingIndex].qty || 1) + 1;
+        cart[existingIndex].qty = (cart[existingIndex].qty ?? 0) + 1;
+        // ensure other fields are present/updated
+        cart[existingIndex].name = product.name;
+        cart[existingIndex].price = product.price;
+        cart[existingIndex].image = product.image;
       } else {
         cart.push({
           id: product.id,
@@ -50,7 +54,11 @@ const ProductDetail: React.FC = () => {
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
       try {
-        window.dispatchEvent(new Event("cart:updated"));
+        setTimeout(() => {
+          try {
+            window.dispatchEvent(new CustomEvent("cart:updated", { detail: { origin: `product_${product.id}` } }));
+          } catch (e) {}
+        }, 0);
       } catch (e) {}
       setSnackbarOpen(true);
     } catch (err) {
