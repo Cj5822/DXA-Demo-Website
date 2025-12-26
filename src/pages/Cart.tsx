@@ -8,7 +8,7 @@ import {
   IconButton,
   Divider,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -41,6 +41,7 @@ const saveCart = (items: CartItem[]) => {
 };
 
 const Cart: React.FC = () => {
+  const navigate = useNavigate();
   const [items, setItems] = useState<CartItem[]>([]);
 
   const mountedRef = useRef(false);
@@ -113,6 +114,11 @@ const Cart: React.FC = () => {
   const tax = items.length > 0 ? 3.0 : 0;
   const shipping = items.length > 0 ? "Free" : "$0.00";
   const total = subtotal + tax;
+
+  const handleProceedToCheckout = () => {
+    if (!items.length) return;
+    navigate("/checkout");
+  };
 
   if (items.length === 0) {
     return (
@@ -236,7 +242,13 @@ const Cart: React.FC = () => {
               </Typography>
             </Box>
 
-            <Button fullWidth variant="contained" sx={{ mb: 2 }}>
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mb: 2 }}
+              onClick={handleProceedToCheckout}
+              disabled={!items.length}
+            >
               Proceed to Checkout
             </Button>
             <Button component={Link} to="/products" fullWidth variant="outlined">
