@@ -1,12 +1,13 @@
 import { Box, Typography, Button, Stack, Select, MenuItem, Grid } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { products } from "../data/products";
 
 const ProductList = () => {
     const navigate = useNavigate();
-    const [selectedCategory, setSelectedCategory] = useState<string>("All");
-    const [sortOption, setSortOption] = useState<string>("featured");
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const selectedCategory = searchParams.get("category") ?? "All";
+    const sortOption = searchParams.get("sort") ?? "featured";
     const categories = ["All", "Tops", "Bottoms", "Dresses", "Outerwear", "Shoes"];
 
     const filteredProducts =
@@ -23,6 +24,20 @@ const ProductList = () => {
     }
 
     const productCount = displayedProducts.length;
+
+    const handleCategoryClick = (category: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (category === "All") params.delete("category");
+        else params.set("category", category);
+        setSearchParams(params);
+    };
+
+    const handleSortChange = (value: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (value === "featured") params.delete("sort");
+        else params.set("sort", value);
+        setSearchParams(params);
+    };
 
     const handleProductClick = (productId: string) => {
         navigate(`/product/${productId}`);
@@ -57,7 +72,7 @@ const ProductList = () => {
                     {categories.map((category) => (
                     <Button
                         key={category}
-                        onClick={() => setSelectedCategory(category)}
+                        onClick={() => handleCategoryClick(category)}
                         variant={selectedCategory === category ? "contained" : "text"}
                         size="small"
                         sx={{
@@ -74,7 +89,7 @@ const ProductList = () => {
                 {/* Sort dropdown */}
                 <Select
                     value={sortOption}
-                    onChange={(e) => setSortOption(e.target.value as string)}
+                    onChange={(e) => handleSortChange(e.target.value as string)}
                     sx={{
                         minWidth: 185,
                         maxHeight: 35,
