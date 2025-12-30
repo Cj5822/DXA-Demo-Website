@@ -1,16 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-	Box,
-	Container,
-	Typography,
-	Paper,
-	Grid,
-	Stack,
-	TextField,
-	Divider,
-	Button,
-} from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Container, Typography, Paper, Grid, Stack, TextField, Divider, Button } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 
 type CartItem = {
 	id: string;
@@ -23,6 +13,19 @@ type CartItem = {
 };
 
 const STORAGE_KEY = "dxa_cart";
+const LAST_ORDER_KEY = "dxa_last_order";
+
+type OrderRecord = {
+	orderNumber: string;
+	items: CartItem[];
+	subtotal: number;
+	shipping: number;
+	tax: number;
+	total: number;
+	shippingAddress?: string;
+	email?: string;
+	createdAt?: string;
+};
 
 const loadCart = (): CartItem[] => {
 	try {
@@ -35,6 +38,7 @@ const loadCart = (): CartItem[] => {
 };
 
 const Checkout: React.FC = () => {
+	const navigate = useNavigate();
 	const [items, setItems] = useState<CartItem[]>([]);
 
 	useEffect(() => {
@@ -49,9 +53,47 @@ const Checkout: React.FC = () => {
 		return { subtotal, shipping, tax, total };
 	}, [items]);
 
-	const handlePlaceOrder = (e: React.FormEvent) => {
+	const handlePlaceOrder = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		alert("Order placed (demo)");
+		if (!items.length) return;
+
+		const data = new FormData(e.currentTarget);
+		const firstName = (data.get("firstName") as string) ?? "";
+		const lastName = (data.get("lastName") as string) ?? "";
+		const address1 = (data.get("address1") as string) ?? "";
+		const address2 = (data.get("address2") as string) ?? "";
+		const city = (data.get("city") as string) ?? "";
+		const postCode = (data.get("postCode") as string) ?? "";
+		const email = (data.get("email") as string) ?? "";
+
+		const recipient = [firstName, lastName].filter(Boolean).join(" ");
+		const shippingAddress = [recipient, address1, address2, city, postCode].filter(Boolean).join(", ");
+		const orderNumber = `ORDER-${Math.floor(100000000 + Math.random() * 900000000)}`;
+		const order: OrderRecord = {
+			orderNumber,
+			items,
+			subtotal: summary.subtotal,
+			shipping: summary.shipping,
+			tax: summary.tax,
+			total: summary.total,
+			shippingAddress: shippingAddress || undefined,
+			email: email || undefined,
+			createdAt: new Date().toISOString(),
+		};
+
+		try {
+			localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(order));
+			localStorage.removeItem(STORAGE_KEY);
+		} catch (err) {}
+
+		setItems([]);
+		setTimeout(() => {
+			try {
+				window.dispatchEvent(new CustomEvent("cart:updated", { detail: { origin: "checkout" } }));
+			} catch (err) {}
+		}, 0);
+
+		navigate("/success", { state: order });
 	};
 
 	if (!items.length) {
@@ -85,8 +127,8 @@ const Checkout: React.FC = () => {
 										Contact Information
 									</Typography>
 									<Stack spacing={2}>
-										<TextField label="Email address" placeholder="email@gmail.com" fullWidth size="small" required />
-										<TextField label="Phone Number" fullWidth size="small" />
+										<TextField name="email" label="Email address" placeholder="email@gmail.com" fullWidth size="small" required />
+										<TextField name="phone" label="Phone Number" fullWidth size="small" />
 									</Stack>
 								</Paper>
 
@@ -96,22 +138,22 @@ const Checkout: React.FC = () => {
 									</Typography>
 									<Grid container spacing={2}>
 										<Grid size={{ xs: 12, sm: 6 }}>
-											<TextField label="First name" required placeholder="Jane" fullWidth size="small" />
+											<TextField name="firstName" label="First name" required placeholder="Jane" fullWidth size="small" />
 										</Grid>
 										<Grid size={{ xs: 12, sm: 6 }}>
-											<TextField label="Last name" required placeholder="Doe" fullWidth size="small" />
+											<TextField name="lastName" label="Last name" required placeholder="Doe" fullWidth size="small" />
 										</Grid>
 										<Grid size={{ xs: 12 }}>
-											<TextField label="Address Line 1" required fullWidth size="small" />
+											<TextField name="address1" label="Address Line 1" required fullWidth size="small" />
 										</Grid>
 										<Grid size={{ xs: 12 }}>
-											<TextField label="Address Line 2" fullWidth size="small" />
+											<TextField name="address2" label="Address Line 2" fullWidth size="small" />
 										</Grid>
 										<Grid size={{ xs: 12, sm: 8 }}>
-											<TextField label="City" required fullWidth size="small" />
+											<TextField name="city" label="City" required fullWidth size="small" />
 										</Grid>
 										<Grid size={{ xs: 12, sm: 4 }}>
-											<TextField label="Post Code" required placeholder="1234" fullWidth size="small" />
+											<TextField name="postCode" label="Post Code" required placeholder="1234" fullWidth size="small" />
 										</Grid>
 									</Grid>
 								</Paper>
