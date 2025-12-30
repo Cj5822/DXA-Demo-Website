@@ -40,6 +40,9 @@ const loadCart = (): CartItem[] => {
 const Checkout: React.FC = () => {
 	const navigate = useNavigate();
 	const [items, setItems] = useState<CartItem[]>([]);
+	const [emailError, setEmailError] = useState<string>("");
+	const [emailTouched, setEmailTouched] = useState(false);
+	const [emailFocused, setEmailFocused] = useState(false);
 
 	useEffect(() => {
 		setItems(loadCart());
@@ -52,6 +55,33 @@ const Checkout: React.FC = () => {
 		const total = subtotal + shipping + tax;
 		return { subtotal, shipping, tax, total };
 	}, [items]);
+
+	const validateEmail = (email: string): string => {
+		if (!email) return "Email is required";
+		const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+		if (!emailRegex.test(email)) {
+			return "Please enter a valid email address (e.g., user@example.com)";
+		}
+		return "";
+	};
+
+	const handleEmailFocus = () => {
+		setEmailFocused(true);
+	};
+
+	const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+		setEmailFocused(false);
+		setEmailTouched(true);
+		const error = validateEmail(e.target.value);
+		setEmailError(error);
+	};
+
+	const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (emailTouched && !emailFocused) {
+			const error = validateEmail(e.target.value);
+			setEmailError(error);
+		}
+	};
 
 	const handlePlaceOrder = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -127,8 +157,28 @@ const Checkout: React.FC = () => {
 										Contact Information
 									</Typography>
 									<Stack spacing={2}>
-										<TextField name="email" label="Email address" placeholder="email@gmail.com" fullWidth size="small" required />
-										<TextField name="phone" label="Phone Number" fullWidth size="small" />
+										<TextField
+											name="email"
+											type="email"
+											label="Email address"
+											placeholder="email@gmail.com"
+											fullWidth
+											size="small"
+											required
+											error={emailTouched && !emailFocused && !!emailError}
+											helperText={emailTouched && !emailFocused && emailError}
+											onFocus={handleEmailFocus}
+											onBlur={handleEmailBlur}
+											onChange={handleEmailChange}
+										/>
+										<TextField
+											name="phone"
+											label="Phone Number"
+											placeholder="123456789"
+											defaultValue="123456789"
+											fullWidth
+											size="small"
+										/>
 									</Stack>
 								</Paper>
 
@@ -138,22 +188,69 @@ const Checkout: React.FC = () => {
 									</Typography>
 									<Grid container spacing={2}>
 										<Grid size={{ xs: 12, sm: 6 }}>
-											<TextField name="firstName" label="First name" required placeholder="Jane" fullWidth size="small" />
+											<TextField
+												name="firstName"
+												label="First name"
+												required
+												placeholder="Jane"
+												defaultValue="Jane"
+												fullWidth
+												size="small"
+											/>
 										</Grid>
 										<Grid size={{ xs: 12, sm: 6 }}>
-											<TextField name="lastName" label="Last name" required placeholder="Doe" fullWidth size="small" />
+											<TextField
+												name="lastName"
+												label="Last name"
+												required
+												placeholder="Doe"
+												defaultValue="Doe"
+												fullWidth
+												size="small"
+											/>
 										</Grid>
 										<Grid size={{ xs: 12 }}>
-											<TextField name="address1" label="Address Line 1" required fullWidth size="small" />
+											<TextField
+												name="address1"
+												label="Address Line 1"
+												required
+												placeholder="123 Main St"
+												defaultValue="123 Main St"
+												fullWidth
+												size="small"
+											/>
 										</Grid>
 										<Grid size={{ xs: 12 }}>
-											<TextField name="address2" label="Address Line 2" fullWidth size="small" />
+											<TextField
+												name="address2"
+												label="Address Line 2"
+												placeholder="Apt 4B"
+												defaultValue="Apt 4B"
+												fullWidth
+												size="small"
+											/>
 										</Grid>
 										<Grid size={{ xs: 12, sm: 8 }}>
-											<TextField name="city" label="City" required fullWidth size="small" />
+											<TextField
+												name="city"
+												label="City"
+												required
+												placeholder="Springfield"
+												defaultValue="Springfield"
+												fullWidth
+												size="small"
+											/>
 										</Grid>
 										<Grid size={{ xs: 12, sm: 4 }}>
-											<TextField name="postCode" label="Post Code" required placeholder="1234" fullWidth size="small" />
+											<TextField
+												name="postCode"
+												label="Post Code"
+												required
+												placeholder="1234"
+												defaultValue="12345"
+												fullWidth
+												size="small"
+											/>
 										</Grid>
 									</Grid>
 								</Paper>
@@ -167,16 +264,17 @@ const Checkout: React.FC = () => {
 											<TextField
 												label="Card Number"
 												placeholder="1234 5678 9012 3456"
+												defaultValue="1212 1212 1212 1212"
 												fullWidth
 												size="small"
 												required
 											/>
 										</Grid>
 										<Grid size={{ xs: 12, sm: 6 }}>
-											<TextField label="Expiry Date" placeholder="MM/YY" fullWidth size="small" required />
+											<TextField label="Expiry Date" placeholder="MM/YY" defaultValue="12/28" fullWidth size="small" required />
 										</Grid>
 										<Grid size={{ xs: 12, sm: 6 }}>
-											<TextField label="CVV" placeholder="123" fullWidth size="small" required />
+											<TextField label="CVV" placeholder="123" defaultValue="123" fullWidth size="small" required />
 										</Grid>
 									</Grid>
 								</Paper>
