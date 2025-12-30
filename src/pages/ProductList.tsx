@@ -1,11 +1,28 @@
 import { Box, Typography, Button, Stack, Select, MenuItem, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { products } from "../data/products";
 
 const ProductList = () => {
     const navigate = useNavigate();
-    const productCount = products.length;
+    const [selectedCategory, setSelectedCategory] = useState<string>("All");
+    const [sortOption, setSortOption] = useState<string>("featured");
     const categories = ["All", "Tops", "Bottoms", "Dresses", "Outerwear", "Shoes"];
+
+    const filteredProducts =
+        selectedCategory === "All"
+            ? products
+            : products.filter((p) => p.category === selectedCategory);
+
+    // create a new array to avoid mutating the original `products` array
+    const displayedProducts = [...filteredProducts];
+    if (sortOption === "price-low") {
+        displayedProducts.sort((a, b) => a.price - b.price);
+    } else if (sortOption === "price-high") {
+        displayedProducts.sort((a, b) => b.price - a.price);
+    }
+
+    const productCount = displayedProducts.length;
 
     const handleProductClick = (productId: string) => {
         navigate(`/product/${productId}`);
@@ -37,13 +54,18 @@ const ProductList = () => {
                 >
                 {/* Category buttons */}
                 <Stack direction="row" spacing={1} flexWrap="wrap">
-                    {categories.map((category, index) => (
+                    {categories.map((category) => (
                     <Button
                         key={category}
-                        variant={index ===0 ? "contained" : "text"}
+                        onClick={() => setSelectedCategory(category)}
+                        variant={selectedCategory === category ? "contained" : "text"}
                         size="small"
-                        sx={{ textTransform: "none",  
-                        backgroundColor: index === 0 ? "#000000" : "white",}}>
+                        sx={{
+                            textTransform: "none",
+                            backgroundColor: selectedCategory === category ? "#000000" : "white",
+                            color: selectedCategory === category ? "white" : "inherit",
+                        }}
+                    >
                     {category}
                     </Button>
                     ))}
@@ -51,7 +73,8 @@ const ProductList = () => {
 
                 {/* Sort dropdown */}
                 <Select
-                    defaultValue="featured"
+                    value={sortOption}
+                    onChange={(e) => setSortOption(e.target.value as string)}
                     sx={{
                         minWidth: 185,
                         maxHeight: 35,
@@ -73,8 +96,8 @@ const ProductList = () => {
             </Box>
             {/* Product Grid */}
             <Grid container spacing={4}>
-                {products.map((product) => (
-                <Grid size={4} key={product.id}>
+                {displayedProducts.map((product) => (
+                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={product.id}>
                     <Box 
                         sx={{ textAlign: "left", cursor: "pointer" }}
                         onClick={() => handleProductClick(product.id)}
