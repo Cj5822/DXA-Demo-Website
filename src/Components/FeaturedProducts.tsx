@@ -7,10 +7,17 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import { products } from "../data/products";
 
 const FeaturedProducts: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleProductClick = (productId: string) => {
+    navigate(`/product/${productId}`);
+  };
+
   return (
     <Box sx={{ mt: 6, px: 4, pb: 6 }}>
       <Box sx={{ maxWidth: "1000px", mx: "auto" }}>
@@ -22,7 +29,7 @@ const FeaturedProducts: React.FC = () => {
             .filter((product) => product.isFeatured)
             .slice(0, 3)
             .map((product) => (
-            <Card key={product.name} sx={{ boxShadow: 3, cursor: "pointer" }}>
+            <Card key={product.name} sx={{ boxShadow: 3, cursor: "pointer", "&:hover": { boxShadow: 6, transform: "translateY(-4px)", transition: "all 0.3s ease" } }} onClick={() => handleProductClick(product.id)}>
               <CardMedia
                 component="img"
                 height="250"
