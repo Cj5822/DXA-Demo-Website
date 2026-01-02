@@ -15,7 +15,7 @@ function App() {
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <Navbar />
 
-        <Box component="main" sx={{ flex: 1 }}>
+        <Box component="main" sx={{ flex: 1, paddingBottom: "220px" }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<ProductList />} />
