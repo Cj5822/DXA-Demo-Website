@@ -1,28 +1,15 @@
-import { Box, Typography, IconButton } from "@mui/material";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import InstagramIcon from "@mui/icons-material/Instagram";
-
-const socialLinks = [
-  { label: "facebook", icon: <FacebookIcon fontSize="small" />, href: "#" },
-  { label: "linkedin", icon: <LinkedInIcon fontSize="small" />, href: "#" },
-  { label: "youtube", icon: <YouTubeIcon fontSize="small" />, href: "#" },
-  { label: "instagram", icon: <InstagramIcon fontSize="small" />, href: "#" },
-];
+import { Box, Typography } from "@mui/material";
 
 const Footer = () => {
-  const year = new Date().getFullYear();
-
   return (
     <Box
       component="footer"
       sx={{
         borderTop: 1,
         borderColor: "divider",
-        py: 3,
         mt: 6,
-        bgcolor: "common.white",
+        bgcolor: "grey.900",
+        color: "grey.100",
       }}
     >
       <Box
@@ -30,43 +17,43 @@ const Footer = () => {
           maxWidth: 1280,
           mx: "auto",
           px: 2,
-          display: "grid",
-          gridTemplateColumns: { xs: "1fr", sm: "1fr auto 1fr" },
-          alignItems: "center",
-          gap: 2,
+          py: 2,
         }}
       >
-        <Box
+        <Typography
+          variant="caption"
           sx={{
-            display: "flex",
-            justifyContent: { xs: "center", sm: "flex-start" },
-            gap: 1,
+            fontFamily: "monospace",
+            fontWeight: 600,
+            mb: 1,
+            display: "block",
+            color: "grey.400",
           }}
         >
-          {socialLinks.map(({ label, icon, href }) => (
-            <IconButton
-              key={label}
-              component="a"
-              href={href}
-              aria-label={label}
-              size="small"
-              sx={{
-                width: 32,
-                height: 32,
-                bgcolor: "common.white",
-                color: "text.primary",
-                borderRadius: 1,
-                "&:hover": { bgcolor: "grey.200" },
-              }}
-            >
-              {icon}
-            </IconButton>
-          ))}
-        </Box>
-        <Typography variant="body2" color="text.secondary" textAlign="center">
-          © {year} DXA
+          DXA Console
         </Typography>
-        <Box />
+        <Box
+          sx={{
+            bgcolor: "grey.950",
+            borderRadius: 1,
+            p: 2,
+            height: 150,
+            overflowY: "auto",
+            fontFamily: "monospace",
+            fontSize: "0.75rem",
+            color: "grey.300",
+            border: 1,
+            borderColor: "grey.800",
+          }}
+        >
+          <Typography
+            variant="caption"
+            component="div"
+            sx={{ fontFamily: "monospace", color: "grey.500" }}
+          >
+            // DXA events will appear here...
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );

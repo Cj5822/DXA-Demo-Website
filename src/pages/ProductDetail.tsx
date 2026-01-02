@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, Button, Stack, Grid, Chip, Snackbar } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -9,6 +9,10 @@ const ProductDetail: React.FC = () => {
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   const product = id ? productById[id] : undefined;
 

@@ -57,11 +57,111 @@ const Checkout: React.FC = () => {
 	}, [items]);
 
 	const validateEmail = (email: string): string => {
-		if (!email) return "Email is required";
-		const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-		if (!emailRegex.test(email)) {
-			return "Please enter a valid email address (e.g., user@example.com)";
+		// Check if email is provided
+		if (!email || email.trim() === "") {
+			return "Email is required";
 		}
+
+		// Check for spaces
+		if (/\s/.test(email)) {
+			return "Email cannot contain spaces";
+		}
+
+		// Check length limits
+		if (email.length > 254) {
+			return "Email is too long (max 254 characters)";
+		}
+
+		// Must contain exactly one @ symbol
+		const atCount = (email.match(/@/g) || []).length;
+		if (atCount === 0) {
+			return "Email must contain @ symbol";
+		}
+		if (atCount > 1) {
+			return "Email cannot contain multiple @ symbols";
+		}
+
+		// Split into local and domain parts
+		const [localPart, domainPart] = email.split("@");
+
+		// Check if local part exists
+		if (!localPart || localPart.length === 0) {
+			return "Email must have a local part before @";
+		}
+
+		// Check if domain part exists
+		if (!domainPart || domainPart.length === 0) {
+			return "Email must have a domain after @";
+		}
+
+		// Check local part length (max 64 chars)
+		if (localPart.length > 64) {
+			return "Email local part is too long (max 64 characters)";
+		}
+
+		// Check domain part length (max 255 chars)
+		if (domainPart.length > 255) {
+			return "Email domain is too long (max 255 characters)";
+		}
+
+		// Check for invalid characters in local part
+		// Allowed: a-z A-Z 0-9 . _ - +
+		if (!/^[a-zA-Z0-9._+-]+$/.test(localPart)) {
+			return "Email contains invalid characters";
+		}
+
+		// Dot rules for local part
+		if (localPart.startsWith(".")) {
+			return "Email cannot start with a dot";
+		}
+		if (localPart.endsWith(".")) {
+			return "Email cannot end with a dot before @";
+		}
+		if (/\.{2,}/.test(localPart)) {
+			return "Email cannot contain consecutive dots";
+		}
+
+		// Domain validation
+		// Domain must contain at least one dot
+		if (!domainPart.includes(".")) {
+			return "Domain must include a dot (e.g., gmail.com)";
+		}
+
+		// Domain cannot start or end with dot
+		if (domainPart.startsWith(".")) {
+			return "Domain cannot start with a dot";
+		}
+		if (domainPart.endsWith(".")) {
+			return "Domain cannot end with a dot";
+		}
+
+		// Domain cannot have consecutive dots
+		if (/\.{2,}/.test(domainPart)) {
+			return "Domain cannot contain consecutive dots";
+		}
+
+		// Domain must have valid format: letters, numbers, dots, hyphens
+		if (!/^[a-zA-Z0-9.-]+$/.test(domainPart)) {
+			return "Domain contains invalid characters";
+		}
+
+		// Domain must have a valid TLD (at least 2 characters after last dot)
+		const domainParts = domainPart.split(".");
+		const tld = domainParts[domainParts.length - 1];
+		if (!tld || tld.length < 2) {
+			return "Domain must have a valid extension (e.g., .com, .org)";
+		}
+
+		// Domain parts cannot be empty (e.g., gmail..com)
+		if (domainParts.some(part => part.length === 0)) {
+			return "Domain has empty segments";
+		}
+
+		// Check for non-ASCII characters (basic check)
+		if (!/^[\x00-\x7F]*$/.test(email)) {
+			return "Email contains unsupported characters";
+		}
+
 		return "";
 	};
 
@@ -95,6 +195,14 @@ const Checkout: React.FC = () => {
 		const city = (data.get("city") as string) ?? "";
 		const postCode = (data.get("postCode") as string) ?? "";
 		const email = (data.get("email") as string) ?? "";
+
+		// Validate email before submitting
+		const emailValidationError = validateEmail(email);
+		if (emailValidationError) {
+			setEmailTouched(true);
+			setEmailError(emailValidationError);
+			return; // Prevent order submission
+		}
 
 		const recipient = [firstName, lastName].filter(Boolean).join(" ");
 		const shippingAddress = [recipient, address1, address2, city, postCode].filter(Boolean).join(", ");

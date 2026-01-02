@@ -21,6 +21,9 @@ import imgGreenDress from "../assets/green-dress.png";
 import imgRedShoes from "../assets/redshoes.png";
 import imgJeans from "../assets/jeans.png";
 import imgDotShirt from "../assets/dotshirt.png";
+import imgSleeves from "../assets/sleeves.png";
+import imgBottoms from "../assets/bottoms.png";
+import imgTops from "../assets/tops.png";
 
 export const products: Product[] = [
   {
@@ -147,6 +150,69 @@ export const products: Product[] = [
     shippingReturn: "Free shipping on all shirts and 30-day returns.",
     sizes: ["XS", "S", "M", "L", "XL"],
     image: imgDotShirt,
+  },
+  {
+    id: "7",
+    name: "Orange Jacket",
+    category: "Outerwear",
+    price: 59.99,
+    description: "Vibrant orange lightweight jacket.",
+    longDescription:
+      "A striking orange jacket perfect for layering and adding color to any outfit. Crafted from a durable, water-resistant nylon with a soft fleece lining for warmth without bulk. Features raglan sleeves for enhanced mobility and a tapered waist for a flattering silhouette.",
+    materials: ["100% ripstop nylon exterior", "Soft fleece lining", "Water-resistant coating"],
+    features: [
+      "Raglan sleeve design for better movement",
+      "Two front zippered pockets",
+      "Adjustable drawstring hem",
+      "Tapered waist for a fitted look",
+    ],
+    care: ["Machine wash cold", "Tumble dry low", "Do not iron directly on fabric"],
+    fitNotes: ["Slim fit with tapered waist", "Sits just above the hip", "Size up if layering with thick sweaters"],
+    shippingReturn: "Free standard shipping and 30-day returns.",
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    image: imgSleeves,
+  },
+  {
+    id: "8",
+    name: "Black Pants",
+    category: "Bottoms",
+    price: 49.99,
+    description: "Sleek black pants for any occasion.",
+    longDescription:
+      "Versatile black pants designed for both work and casual wear. These chinos feature a comfortable stretch blend that moves with you, a streamlined fit, and a clean aesthetic. Perfect for pairing with anything in your wardrobe.",
+    materials: ["85% cotton", "12% polyester", "3% elastane"],
+    features: [
+      "Four-pocket layout with coin pocket",
+      "Flat front for a sharp appearance",
+      "Slim-straight leg fit",
+      "Reinforced stitching at stress points",
+    ],
+    care: ["Machine wash cold with similar colors", "Tumble dry low", "Warm iron if needed"],
+    fitNotes: ["Sits at the waist with a clean silhouette", "Inseam can be tailored", "Fits true to size"],
+    shippingReturn: "Free standard shipping on orders over $50 and 30-day returns.",
+    sizes: ["28", "30", "32", "34", "36", "38", "40"],
+    image: imgBottoms,
+  },
+  {
+    id: "9",
+    name: "T-Shirt with Logo",
+    category: "Tops",
+    price: 39.99,
+    description: "Classic tee with branded logo print.",
+    longDescription:
+      "A timeless t-shirt featuring a bold logo print on the front. Made from premium combed cotton, this tee offers exceptional comfort and durability. The relaxed fit makes it perfect for everyday wear, while the quality construction ensures it looks great wash after wash.",
+    materials: ["100% premium combed cotton", "Pre-shrunk", "Ring-spun yarn"],
+    features: [
+      "Screen-printed logo on chest",
+      "Tagless neck label for comfort",
+      "Double-stitched hems for durability",
+      "Comfortable relaxed fit",
+    ],
+    care: ["Machine wash cold with similar colors", "Tumble dry low", "Turn inside out to preserve logo"],
+    fitNotes: ["Relaxed fit that runs true to size", "Comfortable length hits mid-hip", "Available in multiple sizes"],
+    shippingReturn: "Free shipping on all tees and easy 30-day returns.",
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    image: imgTops,
   },
 ];
 

@@ -1,6 +1,7 @@
 // src/components/CategorySection.tsx
 import React from "react";
 import { Card, CardMedia, CardContent, Typography, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import topsImg from "../assets/tops.png";
 import bottomsImg from "../assets/bottoms.png";
 import outerwearImg from "../assets/outerwear.png";
@@ -12,6 +13,12 @@ const categories = [
 ];
 
 const CategorySection: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleCategoryClick = (category: string) => {
+    navigate(`/products?category=${category}`);
+  };
+
   return (
     <Box sx={{ mt: 6 }}>
       <Box sx={{ maxWidth: "1000px", mx: "auto" }}>
@@ -20,7 +27,7 @@ const CategorySection: React.FC = () => {
         </Typography>
         <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" }, gap: 5 }}>
         {categories.map((cat) => (
-          <Card key={cat.title} sx={{ cursor: "pointer", boxShadow: 3 }}>
+          <Card key={cat.title} sx={{ cursor: "pointer", boxShadow: 3, "&:hover": { boxShadow: 6, transform: "translateY(-4px)", transition: "all 0.3s ease" } }} onClick={() => handleCategoryClick(cat.title)}>
             <CardMedia
               component="img"
               height="300"
@@ -42,6 +49,6 @@ const CategorySection: React.FC = () => {
       </Box>
     </Box>
   );
-};;
+};
 
 export default CategorySection;
