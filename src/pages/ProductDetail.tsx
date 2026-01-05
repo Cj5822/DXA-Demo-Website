@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, Button, Stack, Grid, Chip, Snackbar } from "@mui/material";
+import { Box, Typography, Button, Stack, Grid, Chip } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { productById } from "../data/products";
+import CartModal from "../components/CartModal";
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState<string>("");
-  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+  const [cartModalOpen, setCartModalOpen] = useState<boolean>(false);
+  const [addedProductName, setAddedProductName] = useState<string>("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -64,7 +66,8 @@ const ProductDetail: React.FC = () => {
           } catch (e) {}
         }, 0);
       } catch (e) {}
-      setSnackbarOpen(true);
+      setAddedProductName(product.name);
+      setCartModalOpen(true);
     } catch (err) {
       console.error("Failed to add to cart", err);
     }
@@ -180,11 +183,10 @@ const ProductDetail: React.FC = () => {
             Add to cart
           </Button>
 
-          <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={2500}
-            onClose={() => setSnackbarOpen(false)}
-            message="Added to cart"
+          <CartModal
+            open={cartModalOpen}
+            onClose={() => setCartModalOpen(false)}
+            productName={addedProductName}
           />
 
           {/* Shipping Info */}
