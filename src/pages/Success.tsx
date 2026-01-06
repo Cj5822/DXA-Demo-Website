@@ -3,6 +3,12 @@ import { Box, Button, Container, Divider, Paper, Stack, Typography } from "@mui/
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+declare global {
+	interface Window {
+		decibelInsight?: (action: string, eventName: string, value?: number) => void;
+	}
+}
+
 type CartItem = {
 	id: string;
 	name: string;
@@ -49,6 +55,10 @@ const Success: React.FC = () => {
 		if (stateOrder) {
 			try {
 				localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(stateOrder));
+				// Track the order placement in Decibel Medallia
+				if (window.decibelInsight) {
+					window.decibelInsight("sendTrackedEvent", "DXA Demo Order Placed", stateOrder.total);
+				}
 			} catch (e) {}
 		} else {
 			setOrder(loadLastOrder());
