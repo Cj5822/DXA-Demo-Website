@@ -29,6 +29,7 @@ const Hero: React.FC = () => {
       <Typography variant="h6" sx={{ mt: 2, maxWidth: 500 }}>
         Discover the latest trends in fashion. Premium quality, timeless style.
       </Typography>
+      {/* tracking: data-track="shop-now" is present on this button for analytics */}
       <Button
         variant="contained"
         color="secondary"
