@@ -32,6 +32,7 @@ const Hero: React.FC = () => {
       <Button
         variant="contained"
         color="secondary"
+        className="shop-now-btn"
         sx={{ mt: 4, px: 4, py: 1.5, fontSize: "1rem" }}
         endIcon={<ArrowForwardIcon />}
         onClick={() => navigate("/products")}
