@@ -4,9 +4,20 @@ import { Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import heroImage from "../assets/hero.png";
+import { useDXA } from "../context/DXAContext";
 
 const Hero: React.FC = () => {
   const navigate = useNavigate();
+  const { trackEvent } = useDXA();
+
+  const handleShopNow = () => {
+    trackEvent("Shop Now Clicked", undefined, {
+      page: "home",
+      component: "hero",
+      action: "navigation",
+    });
+    navigate("/products");
+  };
 
   return (
     <Box
@@ -37,7 +48,7 @@ const Hero: React.FC = () => {
         data-track="shop-now"
         sx={{ mt: 4, px: 4, py: 1.5, fontSize: "1rem" }}
         endIcon={<ArrowForwardIcon />}
-        onClick={() => navigate("/products")}
+        onClick={handleShopNow}
       >
         Shop Now
       </Button>

@@ -66,6 +66,7 @@ const ProductDetail: React.FC = () => {
           } catch (e) {}
         }, 0);
       } catch (e) {}
+      
       setAddedProductName(product.name);
       setCartModalOpen(true);
     } catch (err) {
