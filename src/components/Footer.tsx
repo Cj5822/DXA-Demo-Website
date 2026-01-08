@@ -104,7 +104,7 @@ const Footer = () => {
             </Typography>
           ) : (
             <Box>
-              {events.map((event, idx) => (
+              {events.map((event) => (
                 <Typography
                   key={event.id}
                   variant="caption"
