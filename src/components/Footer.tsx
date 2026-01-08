@@ -3,7 +3,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { useDXA } from "../context/DXAContext";
 
 const Footer = () => {
-  const { events, sessionActive, clearEvents } = useDXA();
+  const { events, clearEvents } = useDXA();
 
   const getEventColor = (type: string) => {
     switch (type) {
@@ -55,10 +55,10 @@ const Footer = () => {
             sx={{
               fontFamily: "monospace",
               fontWeight: 600,
-              color: sessionActive ? "#4caf50" : "grey.400",
+              color: "grey.400",
             }}
           >
-            DXA Console {sessionActive && "● ACTIVE"} {events.length > 0 && `(${events.length})`}
+            DXA Console {events.length > 0 && `(${events.length})`}
           </Typography>
           {events.length > 0 && (
             <Tooltip title="Clear Console">
@@ -83,18 +83,10 @@ const Footer = () => {
             fontSize: "0.75rem",
             color: "grey.300",
             border: 1,
-            borderColor: sessionActive ? "#4caf50" : "grey.800",
+            borderColor: "grey.800",
           }}
         >
-          {!sessionActive ? (
-            <Typography
-              variant="caption"
-              component="div"
-              sx={{ fontFamily: "monospace", color: "grey.500" }}
-            >
-              // Call decibelInsight('startSession') to begin tracking
-            </Typography>
-          ) : events.length === 0 ? (
+          {events.length === 0 ? (
             <Typography
               variant="caption"
               component="div"
