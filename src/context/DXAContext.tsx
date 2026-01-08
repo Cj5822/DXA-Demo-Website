@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 
 export interface DXAEvent {
   id: string;
@@ -22,29 +22,7 @@ const DXAContext = createContext<DXAContextType | undefined>(undefined);
 
 export const DXAProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [events, setEvents] = useState<DXAEvent[]>([]);
-  const [sessionActive, setSessionActive] = useState(false);
-
-  useEffect(() => {
-    // Listen for DXA session start/end via decibelInsight
-    const originalDecibelInsight = (window as any).decibelInsight;
-
-    (window as any).decibelInsight = function (action: string, ...args: any[]) {
-      if (action === "startSession") {
-        setSessionActive(true);
-        setEvents([]); // Clear previous events
-        console.log("[DXA] Session started");
-      } else if (action === "endSession") {
-        setSessionActive(false);
-        console.log("[DXA] Session ended");
-      }
-      return originalDecibelInsight?.(action, ...args);
-    };
-
-    return () => {
-      // Restore original function on unmount
-      if (originalDecibelInsight) (window as any).decibelInsight = originalDecibelInsight;
-    };
-  }, []);
+  const sessionActive = true; // Always allow tracking
 
   const trackEvent = useCallback(
     (name: string, value?: number, details?: Record<string, any>) => {
