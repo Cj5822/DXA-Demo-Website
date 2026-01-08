@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { Box, Button, Container, Divider, Paper, Stack, Typography } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDXA } from "../context/DXAContext";
 
 declare global {
 	interface Window {
@@ -48,19 +49,43 @@ const formatCurrency = (value: number) => `$${value.toFixed(2)}`;
 const Success: React.FC = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const { trackConversion } = useDXA();
 	const stateOrder = (location.state as OrderRecord | undefined) ?? null;
 	const [order, setOrder] = useState<OrderRecord | null>(stateOrder);
+	const conversionTrackedRef = useRef(false);
 
 	useEffect(() => {
-		if (stateOrder) {
+		// Only track conversion when coming directly from checkout (stateOrder exists)
+		if (stateOrder && !conversionTrackedRef.current) {
 			try {
-				localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(stateOrder));
+				// Track conversion in DXA
+				trackConversion("Order Completed", stateOrder.total, {
+					orderNumber: stateOrder.orderNumber,
+					itemCount: stateOrder.items.length,
+					subtotal: stateOrder.subtotal,
+					tax: stateOrder.tax,
+					shipping: stateOrder.shipping,
+					total: stateOrder.total,
+					items: stateOrder.items.map((item) => ({
+						name: item.name,
+						price: item.price,
+						qty: item.qty,
+						size: item.size,
+					})),
+					email: stateOrder.email,
+					shippingAddress: stateOrder.shippingAddress,
+				});
+				
 				// Track the order placement in Decibel Medallia
 				if (window.decibelInsight) {
 					window.decibelInsight("sendTrackedEvent", "DXA Demo Order Placed", stateOrder.total);
 				}
+				
+				conversionTrackedRef.current = true;
+				localStorage.setItem(LAST_ORDER_KEY, JSON.stringify(stateOrder));
 			} catch (e) {}
-		} else {
+			setOrder(stateOrder);
+		} else if (!order) {
 			setOrder(loadLastOrder());
 		}
 	}, [stateOrder]);
