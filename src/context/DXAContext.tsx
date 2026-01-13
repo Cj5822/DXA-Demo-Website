@@ -1,4 +1,13 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+
+declare global {
+  interface Window {
+    dxa?: {
+      setCustomDimension?: (dimension: string, value: number | string) => void;
+    };
+    decibelInsight?: (action: string, eventName: string, value?: number) => void;
+  }
+}
 
 export interface DXAEvent {
   id: string;
@@ -23,6 +32,17 @@ const DXAContext = createContext<DXAContextType | undefined>(undefined);
 export const DXAProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [events, setEvents] = useState<DXAEvent[]>([]);
   const sessionActive = true; // Always allow tracking
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ageParam = params.get("age");
+    const age = ageParam ? Number(ageParam) : undefined;
+
+    const setCustomDimension = window.dxa?.setCustomDimension;
+    if (setCustomDimension && age !== undefined && !Number.isNaN(age)) {
+      setCustomDimension("age", age);
+    }
+  }, []);
 
   const trackEvent = useCallback(
     (name: string, value?: number, details?: Record<string, any>) => {
