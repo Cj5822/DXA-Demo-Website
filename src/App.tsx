@@ -12,8 +12,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <DXAProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <DXAProvider>
         <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
           <Navbar />
 
@@ -30,8 +30,8 @@ function App() {
 
           <Footer />
         </Box>
-      </BrowserRouter>
-    </DXAProvider>
+      </DXAProvider>
+    </BrowserRouter>
   );
 }
 

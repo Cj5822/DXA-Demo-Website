@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 declare global {
   interface Window {
@@ -32,9 +33,12 @@ const DXAContext = createContext<DXAContextType | undefined>(undefined);
 export const DXAProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [events, setEvents] = useState<DXAEvent[]>([]);
   const sessionActive = true; // Always allow tracking
+  const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
+    if (typeof window === "undefined") return;
+
+    const params = new URLSearchParams(location.search || window.location.search || "");
     const ageParam = params.get("age");
     const age = ageParam ? Number(ageParam) : undefined;
 
@@ -42,7 +46,7 @@ export const DXAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (setCustomDimension && age !== undefined && !Number.isNaN(age)) {
       setCustomDimension("age", age);
     }
-  }, []);
+  }, [location.search]);
 
   const trackEvent = useCallback(
     (name: string, value?: number, details?: Record<string, any>) => {
