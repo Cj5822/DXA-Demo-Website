@@ -43,11 +43,6 @@ export const DXAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const params = new URLSearchParams(location.search || window.location.search || "");
     const ageParam = params.get("age");
     const channelParam = params.get("channel");
-    
-    console.log("URL Search:", location.search);
-    console.log("Age Param:", ageParam);
-    console.log("Channel Param:", channelParam);
-    
     const age = ageParam ? Number(ageParam) : undefined;
     const channel = channelParam || undefined;
 
@@ -60,12 +55,7 @@ export const DXAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       newCustomDimensions.channel = channel;
     }
 
-    console.log("Custom Dimensions Object:", newCustomDimensions);
     setCustomDimensions(newCustomDimensions);
-
-    if (Object.keys(newCustomDimensions).length > 0) {
-      console.log("[DXA Custom Dimensions]", newCustomDimensions);
-    }
 
     // Set custom dimensions in DXA
     const setCustomDimension = window.dxa?.setCustomDimension;

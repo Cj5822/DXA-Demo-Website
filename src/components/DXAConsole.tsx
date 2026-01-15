@@ -20,9 +20,6 @@ const DXAConsole: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
 
-  // Debug log
-  console.log("DXAConsole customDimensions:", customDimensions);
-
   const getEventColor = (type: DXAEvent["type"]) => {
     switch (type) {
       case "conversion":

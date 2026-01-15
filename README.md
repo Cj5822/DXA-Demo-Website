@@ -1,73 +1,212 @@
-# React + TypeScript + Vite
+# DXA Demo Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React e-commerce demo application built with TypeScript, Vite, and Material-UI. This project demonstrates DXA (Digital Experience Analytics) custom dimensions integration and real-time event tracking.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+DXA Demo Website is a fully responsive, production-ready e-commerce platform featuring:
+- Real-time analytics event tracking with DXA custom dimensions
+- Dynamic product catalog with filtering and search
+- Shopping cart and checkout flow
+- Material-UI component library for consistent design
+- Client-side routing with React Router
+- Single Page Application (SPA) architecture optimized for Vercel deployment
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: React 19 with TypeScript
+- **Build Tool**: Vite 7 with Hot Module Replacement (HMR)
+- **UI Framework**: Material-UI (MUI) 7
+- **Routing**: React Router DOM 6
+- **Package Manager**: npm
+- **Deployment**: Vercel
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js 18+ 
+- npm 9+
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+``ash
+# Clone the repository
+git clone <repository-url>
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+# Install dependencies
+npm install
+``
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Development
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+``ash
+# Start development server (runs on http://localhost:5173)
+npm run dev
+``
+
+The development server includes:
+- Hot Module Replacement (HMR) for instant updates
+- TypeScript compilation with strict checking
+- ESLint configuration for code quality
+
+### Building for Production
+
+``ash
+# Build optimized production bundle
+npm run build
+
+# Preview production build locally
+npm run preview
+``
+
+## Project Structure
+
+``
+src/
++-- components/         # Reusable React components
+¦   +-- NavBar.tsx     # Navigation header
+¦   +-- Footer.tsx     # DXA Console footer with event tracking
+¦   +-- CartModal.tsx  # Shopping cart modal
+¦   +-- ...
++-- pages/             # Page components (routed views)
+¦   +-- Home.tsx
+¦   +-- ProductList.tsx
+¦   +-- ProductDetail.tsx
+¦   +-- Cart.tsx
+¦   +-- Checkout.tsx
+¦   +-- Success.tsx
++-- context/           # React Context for state management
+¦   +-- DXAContext.tsx # Analytics tracking context
++-- data/              # Static data
+¦   +-- products.ts
++-- theme/             # Material-UI theme configuration
+¦   +-- theme.ts
++-- App.tsx            # Main app component with routing
++-- main.tsx           # React DOM entry point
+``
+
+## Features
+
+### DXA Analytics Integration
+
+The application captures and displays custom dimensions in real-time:
+
+**Query Parameters:**
+- ?age=<number> - User age demographic
+- ?channel=<string> - Traffic source/channel
+
+**Example URLs:**
+``
+http://localhost:5174/?age=25&channel=naver
+http://localhost:5174/products?age=30&channel=email
+``
+
+**Console Display:**
+Custom dimensions are displayed in the DXA Console footer with timestamp-based event tracking. Open browser DevTools (F12) to view detailed analytics logs.
+
+### Single Page Application (SPA)
+
+The application is configured for SPA routing with proper fallback to index.html for all routes. This enables:
+- Client-side navigation without page reloads
+- Automatic route matching in development and production
+- Support for query parameters across all routes
+
+## Deployment
+
+### Vercel Configuration
+
+The project includes a ercel.json configuration file that handles SPA routing:
+
+``json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+``
+
+This ensures that all routes are properly served in production.
+
+### Deployment Steps
+
+1. Push code to your Git repository (GitHub, GitLab, etc.)
+2. Connect repository to Vercel
+3. Vercel automatically detects Node.js project and builds with 
+pm run build
+4. Production build is deployed to edge network
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| 
+pm run dev | Start development server with HMR |
+| 
+pm run build | TypeScript type check + Vite production build |
+| 
+pm run lint | Run ESLint across all files |
+| 
+pm run preview | Preview production build locally |
+
+## Code Quality
+
+The project includes ESLint configuration for:
+- React best practices
+- TypeScript strict mode
+- React Hooks rules
+- Refresh component rules
+
+Run linting:
+``ash
+npm run lint
+``
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
+
+## Performance Optimizations
+
+- **Vite**: Lightning-fast build tool with optimized chunking
+- **Code Splitting**: Automatic route-based code splitting
+- **SPA Routing**: Client-side navigation without full page reloads
+- **Lazy Loading**: Material-UI components loaded on demand
+
+## Troubleshooting
+
+### 404 Errors on Page Reload
+
+If you get a 404 error when reloading on non-root routes (e.g., /products):
+
+**Development:** Ensure ppType: 'spa' is set in ite.config.ts ?
+
+**Production (Vercel):** Ensure ercel.json contains the rewrite rules ?
+
+### Custom Dimensions Not Displaying
+
+1. Verify URL includes query parameters: /?age=10&channel=naver
+2. Check browser console (F12) for [DXA Custom Dimensions] log message
+3. Ensure DXA Console footer is visible (bottom of page)
+
+## Contributing
+
+When contributing to this project:
+
+1. Maintain TypeScript strict mode compliance
+2. Follow ESLint rules (run 
+pm run lint)
+3. Use meaningful commit messages
+4. Test both development and production builds
+5. Update README.md for new features
+
+## License
+
+Proprietary - DXA Demo Project
+
+## Support
+
+For issues or questions, please contact the development team or open an issue in the repository.
