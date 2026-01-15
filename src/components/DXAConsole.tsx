@@ -16,9 +16,12 @@ import { useDXA } from "../context/DXAContext";
 import type { DXAEvent } from "../context/DXAContext";
 
 const DXAConsole: React.FC = () => {
-  const { events, clearEvents } = useDXA();
+  const { events, clearEvents, customDimensions } = useDXA();
   const [isOpen, setIsOpen] = useState(true);
   const [selectedEvent, setSelectedEvent] = useState<string | null>(null);
+
+  // Debug log
+  console.log("DXAConsole customDimensions:", customDimensions);
 
   const getEventColor = (type: DXAEvent["type"]) => {
     switch (type) {
@@ -126,6 +129,44 @@ const DXAConsole: React.FC = () => {
             fontSize: "0.75rem",
           }}
         >
+          {/* Custom Dimensions Section */}
+          {Object.keys(customDimensions).length > 0 && (
+            <Box
+              sx={{
+                backgroundColor: "#fff3cd",
+                border: "1px solid #ffc107",
+                borderRadius: 0.5,
+                p: 1,
+                mb: 1,
+              }}
+            >
+              <Typography
+                variant="caption"
+                sx={{
+                  display: "block",
+                  color: "#856404",
+                  fontWeight: 600,
+                  mb: 0.5,
+                }}
+              >
+                📊 CUSTOM DIMENSIONS
+              </Typography>
+              {Object.entries(customDimensions).map(([key, value]) => (
+                <Typography
+                  key={key}
+                  variant="caption"
+                  sx={{
+                    display: "block",
+                    color: "#333",
+                    fontSize: "0.7rem",
+                  }}
+                >
+                  {key}: <strong>{String(value)}</strong>
+                </Typography>
+              ))}
+            </Box>
+          )}
+
           {events.length === 0 ? (
             <Typography
               variant="caption"

@@ -22,6 +22,7 @@ export interface DXAEvent {
 interface DXAContextType {
   events: DXAEvent[];
   sessionActive: boolean;
+  customDimensions: Record<string, any>;
   trackEvent: (name: string, value?: number, details?: Record<string, any>) => void;
   trackConversion: (name: string, value?: number, details?: Record<string, any>) => void;
   trackError: (name: string, details?: Record<string, any>) => void;
@@ -32,6 +33,7 @@ const DXAContext = createContext<DXAContextType | undefined>(undefined);
 
 export const DXAProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [events, setEvents] = useState<DXAEvent[]>([]);
+  const [customDimensions, setCustomDimensions] = useState<Record<string, any>>({});
   const sessionActive = true; // Always allow tracking
   const location = useLocation();
 
@@ -40,11 +42,40 @@ export const DXAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const params = new URLSearchParams(location.search || window.location.search || "");
     const ageParam = params.get("age");
+    const channelParam = params.get("channel");
+    
+    console.log("URL Search:", location.search);
+    console.log("Age Param:", ageParam);
+    console.log("Channel Param:", channelParam);
+    
     const age = ageParam ? Number(ageParam) : undefined;
+    const channel = channelParam || undefined;
 
+    // Build custom dimensions object
+    const newCustomDimensions: Record<string, any> = {};
+    if (age !== undefined && !Number.isNaN(age)) {
+      newCustomDimensions.age = age;
+    }
+    if (channel) {
+      newCustomDimensions.channel = channel;
+    }
+
+    console.log("Custom Dimensions Object:", newCustomDimensions);
+    setCustomDimensions(newCustomDimensions);
+
+    if (Object.keys(newCustomDimensions).length > 0) {
+      console.log("[DXA Custom Dimensions]", newCustomDimensions);
+    }
+
+    // Set custom dimensions in DXA
     const setCustomDimension = window.dxa?.setCustomDimension;
-    if (setCustomDimension && age !== undefined && !Number.isNaN(age)) {
-      setCustomDimension("age", age);
+    if (setCustomDimension) {
+      if (age !== undefined && !Number.isNaN(age)) {
+        setCustomDimension("age", age);
+      }
+      if (channel) {
+        setCustomDimension("channel", channel);
+      }
     }
   }, [location.search]);
 
@@ -120,7 +151,7 @@ export const DXAProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   return (
-    <DXAContext.Provider value={{ events, sessionActive, trackEvent, trackConversion, trackError, clearEvents }}>
+    <DXAContext.Provider value={{ events, sessionActive, customDimensions, trackEvent, trackConversion, trackError, clearEvents }}>
       {children}
     </DXAContext.Provider>
   );
