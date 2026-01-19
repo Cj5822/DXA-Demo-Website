@@ -1,10 +1,17 @@
 import { Box, Typography, Button, Stack, Select, MenuItem, Grid } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 import { products } from "../data/products";
 
 const ProductList = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+        if (window.decibelInsight) {
+            window.decibelInsight("trackPageView", window.location.pathname + window.location.search.replace('?','/'));
+        }
+    }, [searchParams]);
 
     const selectedCategory = searchParams.get("category") ?? "All";
     const sortOption = searchParams.get("sort") ?? "featured";
