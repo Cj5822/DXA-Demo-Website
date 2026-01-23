@@ -1,17 +1,32 @@
 import { Box, Typography, Button, Stack, Select, MenuItem, Grid } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { products } from "../data/products";
+import { useDXA } from "../context/DXAContext";
 
 const ProductList = () => {
     const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
+    const { trackEvent } = useDXA();
+    const lastTrackedCategory = useRef<string | null>(null);
 
     useEffect(() => {
-        if (window.decibelInsight) {
-            window.decibelInsight("trackPageView", window.location.pathname + window.location.search.replace('?','/'));
+        // Only fire when a category filter is present and changes
+        const currentCategory = searchParams.get("category");
+        if (!currentCategory) {
+            lastTrackedCategory.current = null;
+            return;
         }
-    }, [searchParams]);
+
+        if (lastTrackedCategory.current === currentCategory) return;
+        lastTrackedCategory.current = currentCategory;
+
+        const pathWithSearch = window.location.pathname + window.location.search.replace("?", "/");
+        if (window.decibelInsight) {
+            window.decibelInsight("trackPageView", pathWithSearch);
+            trackEvent("Decibel trackPageView", undefined, { path: pathWithSearch, category: currentCategory });
+        }
+    }, [searchParams, trackEvent]);
 
     const selectedCategory = searchParams.get("category") ?? "All";
     const sortOption = searchParams.get("sort") ?? "featured";
