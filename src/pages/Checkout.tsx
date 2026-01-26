@@ -258,7 +258,7 @@ const Checkout: React.FC = () => {
 
 				<Grid container spacing={3} alignItems="flex-start">
 					<Grid size={{ xs: 12, md: 8 }}>
-						<form onSubmit={handlePlaceOrder}>
+						<form onSubmit={handlePlaceOrder} data-di-form-track data-di-form-id="checkout">
 							<Stack spacing={2.5}>
 								<Paper elevation={0} sx={{ p: 3, borderRadius: 2, border: "1px solid #e0e0e0" }}>
 									<Typography variant="subtitle1" fontWeight={600} sx={{ mb: 2 }}>
@@ -278,7 +278,16 @@ const Checkout: React.FC = () => {
 											onFocus={handleEmailFocus}
 											onBlur={handleEmailBlur}
 											onChange={handleEmailChange}
+											inputProps={{ 
+												"data-di-field-id": "email",
+												"data-di-field-error": emailTouched && !emailFocused && !!emailError ? "true" : undefined
+											}}
 										/>
+										{emailTouched && !emailFocused && emailError && (
+											<span data-di-field-error-for="email" style={{ display: 'none' }}>
+												{emailError}
+											</span>
+										)}
 										<TextField
 											name="phone"
 											label="Phone Number"
@@ -286,6 +295,7 @@ const Checkout: React.FC = () => {
 											defaultValue="123456789"
 											fullWidth
 											size="small"
+											inputProps={{ "data-di-field-id": "phone" }}
 										/>
 									</Stack>
 								</Paper>
@@ -303,6 +313,7 @@ const Checkout: React.FC = () => {
 												placeholder="Jane"
 												defaultValue="Jane"
 												fullWidth
+												inputProps={{ "data-di-field-id": "firstName" }}
 												size="small"
 											/>
 										</Grid>
@@ -314,6 +325,7 @@ const Checkout: React.FC = () => {
 												placeholder="Doe"
 												defaultValue="Doe"
 												fullWidth
+												inputProps={{ "data-di-field-id": "lastName" }}
 												size="small"
 											/>
 										</Grid>
@@ -324,6 +336,7 @@ const Checkout: React.FC = () => {
 												required
 												placeholder="123 Main St"
 												defaultValue="123 Main St"
+												inputProps={{ "data-di-field-id": "address1" }}
 												fullWidth
 												size="small"
 											/>
@@ -334,6 +347,7 @@ const Checkout: React.FC = () => {
 												label="Address Line 2"
 												placeholder="Apt 4B"
 												defaultValue="Apt 4B"
+												inputProps={{ "data-di-field-id": "address2" }}
 												fullWidth
 												size="small"
 											/>
@@ -344,6 +358,7 @@ const Checkout: React.FC = () => {
 												label="City"
 												required
 												placeholder="Springfield"
+												inputProps={{ "data-di-field-id": "city" }}
 												defaultValue="Springfield"
 												fullWidth
 												size="small"
@@ -354,6 +369,7 @@ const Checkout: React.FC = () => {
 												name="postCode"
 												label="Post Code"
 												required
+												inputProps={{ "data-di-field-id": "postCode" }}
 												placeholder="1234"
 												defaultValue="12345"
 												fullWidth
@@ -376,13 +392,14 @@ const Checkout: React.FC = () => {
 												fullWidth
 												size="small"
 												required
+												inputProps={{ "data-di-field-id": "cardNumber" }}
 											/>
 										</Grid>
 										<Grid size={{ xs: 12, sm: 6 }}>
-											<TextField label="Expiry Date" placeholder="MM/YY" defaultValue="12/28" fullWidth size="small" required />
+											<TextField label="Expiry Date" placeholder="MM/YY" defaultValue="12/28" fullWidth size="small" required inputProps={{ "data-di-field-id": "expiryDate" }} />
 										</Grid>
 										<Grid size={{ xs: 12, sm: 6 }}>
-											<TextField label="CVV" placeholder="123" defaultValue="123" fullWidth size="small" required />
+											<TextField label="CVV" placeholder="123" defaultValue="123" fullWidth size="small" required inputProps={{ "data-di-field-id": "cvv" }} />
 										</Grid>
 									</Grid>
 								</Paper>
