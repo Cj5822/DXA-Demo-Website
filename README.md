@@ -5,207 +5,208 @@ A modern React e-commerce demo application built with TypeScript, Vite, and Mate
 ## Overview
 
 DXA Demo Website is a fully responsive, production-ready e-commerce platform featuring:
-- Real-time analytics event tracking with DXA custom dimensions
-- Dynamic product catalog with filtering and search
-- Shopping cart and checkout flow
-- Material-UI component library for consistent design
-- Client-side routing with React Router
-- Single Page Application (SPA) architecture optimized for Vercel deployment
+
+* Real-time analytics event tracking with DXA custom dimensions
+* Dynamic product catalog with filtering and search
+* Shopping cart and checkout flow
+* Material-UI (MUI) component library for consistent design
+* Client-side routing with React Router
+* Single Page Application (SPA) architecture optimized for Vercel deployment
 
 ## Tech Stack
 
-- **Frontend**: React 19 with TypeScript
-- **Build Tool**: Vite 7 with Hot Module Replacement (HMR)
-- **UI Framework**: Material-UI (MUI) 7
-- **Routing**: React Router DOM 6
-- **Package Manager**: npm
-- **Deployment**: Vercel
+* **Frontend**: React 19 with TypeScript
+* **Build Tool**: Vite 7 (HMR enabled)
+* **UI Framework**: Material-UI (MUI) 7
+* **Routing**: React Router DOM 6
+* **Package Manager**: npm
+* **Deployment**: Vercel
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm 9+
+* Node.js 18+
+* npm 9+
 
 ### Installation
 
-``ash
+```bash
 # Clone the repository
 git clone <repository-url>
 
 # Install dependencies
 npm install
-``
+```
 
 ### Development
 
-``ash
-# Start development server (runs on http://localhost:5173)
+```bash
+# Start development server (http://localhost:5173)
 npm run dev
-``
+```
 
 The development server includes:
-- Hot Module Replacement (HMR) for instant updates
-- TypeScript compilation with strict checking
-- ESLint configuration for code quality
+
+* Hot Module Replacement (HMR)
+* TypeScript strict type checking
+* ESLint for code quality
 
 ### Building for Production
 
-``ash
+```bash
 # Build optimized production bundle
 npm run build
 
 # Preview production build locally
 npm run preview
-``
+```
 
 ## Project Structure
 
-``
+```text
 src/
-+-- components/         # Reusable React components
-�   +-- NavBar.tsx     # Navigation header
-�   +-- Footer.tsx     # DXA Console footer with event tracking
-�   +-- CartModal.tsx  # Shopping cart modal
-�   +-- ...
-+-- pages/             # Page components (routed views)
-�   +-- Home.tsx
-�   +-- ProductList.tsx
-�   +-- ProductDetail.tsx
-�   +-- Cart.tsx
-�   +-- Checkout.tsx
-�   +-- Success.tsx
-+-- context/           # React Context for state management
-�   +-- DXAContext.tsx # Analytics tracking context
-+-- data/              # Static data
-�   +-- products.ts
-+-- theme/             # Material-UI theme configuration
-�   +-- theme.ts
-+-- App.tsx            # Main app component with routing
-+-- main.tsx           # React DOM entry point
-``
+├── components/          # Reusable React components
+│   ├── NavBar.tsx       # Navigation header
+│   ├── Footer.tsx       # DXA Console footer with event tracking
+│   ├── CartModal.tsx    # Shopping cart modal
+│   └── ...
+├── pages/               # Routed page components
+│   ├── Home.tsx
+│   ├── ProductList.tsx
+│   ├── ProductDetail.tsx
+│   ├── Cart.tsx
+│   ├── Checkout.tsx
+│   └── Success.tsx
+├── context/             # React Context providers
+│   └── DXAContext.tsx   # Analytics tracking context
+├── data/                # Static data
+│   └── products.ts
+├── theme/               # MUI theme configuration
+│   └── theme.ts
+├── App.tsx              # App component with routing
+└── main.tsx             # React entry point
+```
 
 ## Features
 
 ### DXA Analytics Integration
 
-The application captures and displays custom dimensions in real-time:
+The application captures and displays custom dimensions in real time.
 
-**Query Parameters:**
-- ?age=<number> - User age demographic
-- ?channel=<string> - Traffic source/channel
+**Query Parameters**:
 
-**Example URLs:**
-``
-http://localhost:5174/?age=25&channel=naver
-http://localhost:5174/products?age=30&channel=email
-``
+* `age=<number>` – User age demographic
+* `channel=<string>` – Traffic source or campaign channel
 
-**Console Display:**
-Custom dimensions are displayed in the DXA Console footer with timestamp-based event tracking. Open browser DevTools (F12) to view detailed analytics logs.
+**Example URLs**:
+
+```text
+http://localhost:5173/?age=25&channel=naver
+http://localhost:5173/products?age=30&channel=email
+```
+
+**Console Display**:
+Custom dimensions are displayed in the DXA Console footer with timestamped events. Open browser DevTools (F12) for detailed analytics logs.
 
 ### Single Page Application (SPA)
 
-The application is configured for SPA routing with proper fallback to index.html for all routes. This enables:
-- Client-side navigation without page reloads
-- Automatic route matching in development and production
-- Support for query parameters across all routes
+The application supports full SPA routing with proper fallback handling:
+
+* Client-side navigation without page reloads
+* Query parameter support across all routes
+* Consistent routing in development and production
 
 ## Deployment
 
 ### Vercel Configuration
 
-The project includes a ercel.json configuration file that handles SPA routing:
+The project includes a `vercel.json` file to support SPA routing:
 
-``json
+```json
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
-``
-
-This ensures that all routes are properly served in production.
+```
 
 ### Deployment Steps
 
-1. Push code to your Git repository (GitHub, GitLab, etc.)
-2. Connect repository to Vercel
-3. Vercel automatically detects Node.js project and builds with 
-pm run build
-4. Production build is deployed to edge network
+1. Push the repository to GitHub / GitLab
+2. Connect the repository to Vercel
+3. Vercel automatically runs:
+
+   ```bash
+   npm run build
+   ```
+4. The production build is deployed to Vercel’s edge network
 
 ## Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| 
-pm run dev | Start development server with HMR |
-| 
-pm run build | TypeScript type check + Vite production build |
-| 
-pm run lint | Run ESLint across all files |
-| 
-pm run preview | Preview production build locally |
+| Command           | Description                            |
+| ----------------- | -------------------------------------- |
+| `npm run dev`     | Start development server with HMR      |
+| `npm run build`   | Type check and build production bundle |
+| `npm run lint`    | Run ESLint                             |
+| `npm run preview` | Preview production build locally       |
 
 ## Code Quality
 
-The project includes ESLint configuration for:
-- React best practices
-- TypeScript strict mode
-- React Hooks rules
-- Refresh component rules
+The project enforces best practices via ESLint:
+
+* React and Hooks rules
+* TypeScript strict mode
+* Consistent formatting and safety checks
 
 Run linting:
-``ash
+
+```bash
 npm run lint
-``
+```
 
 ## Browser Support
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
+* Chrome (latest)
+* Firefox (latest)
+* Safari (latest)
+* Edge (latest)
 
 ## Performance Optimizations
 
-- **Vite**: Lightning-fast build tool with optimized chunking
-- **Code Splitting**: Automatic route-based code splitting
-- **SPA Routing**: Client-side navigation without full page reloads
-- **Lazy Loading**: Material-UI components loaded on demand
+* **Vite**: Fast dev server and optimized builds
+* **Code Splitting**: Route-based chunking
+* **SPA Routing**: No full-page reloads
+* **Lazy Loading**: Optimized MUI imports
 
 ## Troubleshooting
 
 ### 404 Errors on Page Reload
 
-If you get a 404 error when reloading on non-root routes (e.g., /products):
+If reloading a non-root route (e.g. `/products`) causes a 404:
 
-**Development:** Ensure ppType: 'spa' is set in ite.config.ts ?
-
-**Production (Vercel):** Ensure ercel.json contains the rewrite rules ?
+* **Development**: Ensure `appType: 'spa'` is set in `vite.config.ts`
+* **Production**: Ensure `vercel.json` rewrite rules are present
 
 ### Custom Dimensions Not Displaying
 
-1. Verify URL includes query parameters: /?age=10&channel=naver
-2. Check browser console (F12) for [DXA Custom Dimensions] log message
-3. Ensure DXA Console footer is visible (bottom of page)
+1. Confirm query parameters exist in the URL (e.g. `?age=25&channel=naver`)
+2. Check DevTools console for DXA logs
+3. Ensure the DXA Console footer is visible
 
 ## Contributing
 
-When contributing to this project:
+When contributing:
 
-1. Maintain TypeScript strict mode compliance
-2. Follow ESLint rules (run 
-pm run lint)
-3. Use meaningful commit messages
-4. Test both development and production builds
+1. Maintain TypeScript strict mode
+2. Run `npm run lint` before committing
+3. Use clear, descriptive commit messages
+4. Test both dev and production builds
 5. Update README.md for new features
 
 ## License
 
-Proprietary - DXA Demo Project
+Proprietary – DXA Demo Project
 
 ## Support
 
