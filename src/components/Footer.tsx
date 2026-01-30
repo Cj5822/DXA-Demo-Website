@@ -86,39 +86,7 @@ const Footer = () => {
             borderColor: "grey.800",
           }}
         >
-          {/* Custom Dimensions Section */}
-          {Object.keys(customDimensions).length > 0 && (
-            <Box sx={{ mb: 1.5, pb: 1.5, borderBottom: 1, borderColor: "grey.800" }}>
-              <Typography
-                variant="caption"
-                component="div"
-                sx={{
-                  fontFamily: "monospace",
-                  color: "#f8cb44",
-                  fontWeight: 600,
-                  mb: 0.5,
-                }}
-              >
-                CUSTOM DIMENSIONS
-              </Typography>
-              {Object.entries(customDimensions).map(([key, value]) => (
-                <Typography
-                  key={key}
-                  variant="caption"
-                  component="div"
-                  sx={{
-                    fontFamily: "monospace",
-                    color: "#f8cb44",
-                    fontSize: "0.7rem",
-                  }}
-                >
-                  {key}: <span style={{ color: "#fff" }}>{String(value)}</span>
-                </Typography>
-              ))}
-            </Box>
-          )}
-
-          {events.length === 0 ? (
+          {events.length === 0 && Object.keys(customDimensions).length === 0 ? (
             <Typography
               variant="caption"
               component="div"
@@ -128,6 +96,20 @@ const Footer = () => {
             </Typography>
           ) : (
             <Box>
+              {Object.entries(customDimensions).map(([key, value]) => (
+                <Typography
+                  key={`dim-${key}`}
+                  variant="caption"
+                  component="div"
+                  sx={{
+                    fontFamily: "monospace",
+                    color: "#f8cb44",
+                    mb: 0.5,
+                  }}
+                >
+                  decibelInsight('setCustomDimension', '{key}', {typeof value === 'string' ? `'${value}'` : String(value)})
+                </Typography>
+              ))}
               {events.map((event) => (
                 <Typography
                   key={event.id}
